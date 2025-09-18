@@ -14,10 +14,11 @@ function login() {
     return res.json();
   })
   .then(data => {
-    // ✅ Save user details in localStorage for frontend checks
+
     localStorage.setItem('userId', data.id);
     localStorage.setItem('role', data.role);
-    alert('Login successful!');
+    localStorage.setItem("username", data.username);
+    alert(`Welcome ${data.username}`);
     window.location.href = 'menu.html';
   })
   .catch(() => alert('Invalid credentials or login failed'));
@@ -28,11 +29,7 @@ function register() {
   const username = document.getElementById('reg-username').value.trim();
   const password = document.getElementById('reg-password').value.trim();
 
-  if (!username || !password) {
-    document.getElementById('register-msg').textContent = '⚠️ Please fill in all fields';
-    return;
-  }
-
+  console.log("Sending:", username, password); // Debug
   fetch('/auth/register', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -43,9 +40,14 @@ function register() {
     return res.json();
   })
   .then(() => {
-    document.getElementById('register-msg').textContent = '✅ Registered successfully! You can now log in.';
+    document.getElementById('register-msg').textContent =
+      '✅ Registered successfully! You can now log in.';
+    alert('Registration successful!');
+    window.location.href = 'menu.html';
   })
-  .catch(() => {
-    document.getElementById('register-msg').textContent = '❌ Registration failed';
+  .catch(err => {
+    console.error("Register error:", err);
+    document.getElementById('register-msg').textContent =
+      '❌ Registration failed';
   });
 }

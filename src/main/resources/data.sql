@@ -1,5 +1,5 @@
 
-INSERT INTO users (username, password, role) VALUES ('student', 'student123', 'STUDENT');
+INSERT INTO users (username, password, role) VALUES ('user1', 'user123', 'STUDENT');
 INSERT INTO users (username, password, role) VALUES ('admin', 'admin123', 'ADMIN');
 -- Menu Items
 INSERT INTO menu_item (name, description, price) VALUES ('Margherita Pizza', 'Classic cheese & tomato', 199.0);
