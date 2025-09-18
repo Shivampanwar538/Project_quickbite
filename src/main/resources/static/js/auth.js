@@ -19,7 +19,11 @@ function login() {
     localStorage.setItem('role', data.role);
     localStorage.setItem("username", data.username);
     alert(`Welcome ${data.username}`);
-    window.location.href = 'menu.html';
+    if (data.role === 'ADMIN') {
+      window.location.href = 'admin.html';
+    } else {
+      window.location.href = 'menu.html';
+    }
   })
   .catch(() => alert('Invalid credentials or login failed'));
 }
