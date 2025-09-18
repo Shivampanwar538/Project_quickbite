@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - QuickBite</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+
+<!-- Navbar injected by JS -->
+
+<div class="container mt-4">
+    <h2 class="text-center mb-4">🍽 Admin Dashboard</h2>
+
+    <!-- Add Menu Item -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <h4 class="card-title">Add New Menu Item</h4>
+            <form id="add-item-form">
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <input type="text" id="itemName" class="form-control" placeholder="Item Name" required>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="text" id="itemDescription" class="form-control" placeholder="Description" required>
+                    </div>
+                    <div class="col-md-2">
+                        <input type="number" step="0.01" id="itemPrice" class="form-control" placeholder="Price (₹)" required>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-success w-100">Add Item</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Menu Items -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <h4 class="card-title">Current Menu</h4>
+            <table class="table table-striped mt-3" id="menu-table">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Item Name</th>
+                    <th>Description</th>
+                    <th>Price (₹)</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody><!-- filled by JS --></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Orders Management -->
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Manage Orders</h4>
+            <table class="table table-striped mt-3" id="orders-table">
+                <thead>
+                <tr>
+                    <th>Order ID</th>
+                    <th>User</th>
+                    <th>Item</th>
+                    <th>Quantity</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody><!-- filled by JS --></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/admin.js"></script>
+</body>
+</html>
