@@ -1,7 +1,7 @@
 package com.quickbite.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.quickbite.config.SecurityConfig;
+import com.quickbite.config.TestSecurityConfig;
 import com.quickbite.dto.MenuItemDTO;
 import com.quickbite.model.MenuItem;
 import com.quickbite.service.MenuService;
@@ -27,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 
 @WebMvcTest(MenuController.class)
-@Import(SecurityConfig.class)
+@Import(TestSecurityConfig.class)
 class MenuControllerTest {
 
     @Autowired

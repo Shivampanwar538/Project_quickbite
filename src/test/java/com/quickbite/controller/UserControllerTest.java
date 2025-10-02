@@ -1,7 +1,7 @@
 package com.quickbite.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.quickbite.config.SecurityConfig;
+import com.quickbite.config.TestSecurityConfig;
 import com.quickbite.dto.UserDTO;
 import com.quickbite.model.User;
 import com.quickbite.service.UserService;
@@ -24,7 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf; // <-- ADD THIS IMPORT
 import org.springframework.context.annotation.Import;
 @WebMvcTest(UserController.class)
-@Import(SecurityConfig.class) // <--- ADD THIS LINE
+@Import(TestSecurityConfig.class) // <--- ADD THIS LINE
 class UserControllerTest {
 
     @Autowired

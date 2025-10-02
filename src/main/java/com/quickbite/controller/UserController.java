@@ -3,6 +3,8 @@ package com.quickbite.controller;
 import com.quickbite.dto.UserDTO;
 import com.quickbite.model.User;
 import com.quickbite.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,8 +28,15 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<User> login(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<User> login(@RequestBody LoginRequest loginRequest, HttpServletRequest request) {
         User user = userService.login(loginRequest.getUsername(), loginRequest.getPassword());
+        
+        // Create session
+        HttpSession session = request.getSession(true);
+        session.setAttribute("user", user);
+        session.setAttribute("username", user.getUsername());
+        session.setAttribute("role", user.getRole());
+        
         return ResponseEntity.ok(user);
     }
 
@@ -41,6 +50,25 @@ public class UserController {
     public ResponseEntity<List<UserDTO>> getUsers() {
         List<UserDTO> users = userService.getAllUsers();
         return ResponseEntity.ok(users);
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<String> logout(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            session.invalidate();
+        }
+        return ResponseEntity.ok("Logged out successfully");
+    }
+
+    @GetMapping("/current")
+    public ResponseEntity<User> getCurrentUser(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session != null && session.getAttribute("user") != null) {
+            User user = (User) session.getAttribute("user");
+            return ResponseEntity.ok(user);
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 
     // Inner class for login request

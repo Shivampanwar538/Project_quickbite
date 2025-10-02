@@ -3,50 +3,27 @@ package com.quickbite.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig {
-
-    private final CustomAuthenticationProvider customAuthenticationProvider;
-    private final SessionAuthenticationFilter sessionAuthenticationFilter;
-
-    public SecurityConfig(CustomAuthenticationProvider customAuthenticationProvider, SessionAuthenticationFilter sessionAuthenticationFilter) {
-        this.customAuthenticationProvider = customAuthenticationProvider;
-        this.sessionAuthenticationFilter = sessionAuthenticationFilter;
-    }
+public class TestSecurityConfig {
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
-        return config.getAuthenticationManager();
-    }
-
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain testSecurityFilterChain(HttpSecurity http) throws Exception {
         http
-                // Disable CSRF for stateless API
+                // Disable CSRF for testing
                 .csrf(AbstractHttpConfigurer::disable)
                 
-                // Enable session management
+                // Disable session management for testing
                 .sessionManagement(session -> session
-                        .sessionCreationPolicy(org.springframework.security.config.http.SessionCreationPolicy.IF_REQUIRED)
+                        .sessionCreationPolicy(org.springframework.security.config.http.SessionCreationPolicy.STATELESS)
                 )
-                
-                // Configure authentication
-                .authenticationProvider(customAuthenticationProvider)
-                
-                // Add session-based authentication filter
-                .addFilterBefore(sessionAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
 
-                // Define access rules for endpoints
+                // Define access rules for endpoints - match production security rules
                 .authorizeHttpRequests(auth -> auth
                         // 1. PUBLIC ACCESS (Pages and Static Resources)
                         .requestMatchers("/menu.html", "/admin.html", "/orders.html", "/index.html", "/login.html", "/register.html", "/css/**", "/js/**", "/favicon.ico").permitAll()
@@ -72,10 +49,8 @@ public class SecurityConfig {
                         .anyRequest().authenticated()
                 )
                 
-                // Disable form login since we're using API-based authentication
+                // Disable form login and logout for testing
                 .formLogin(AbstractHttpConfigurer::disable)
-                
-                // Disable default logout since we handle it in UserController
                 .logout(AbstractHttpConfigurer::disable);
 
         return http.build();

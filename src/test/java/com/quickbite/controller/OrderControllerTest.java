@@ -1,7 +1,7 @@
 package com.quickbite.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.quickbite.config.SecurityConfig; // <-- ADDED
+import com.quickbite.config.TestSecurityConfig; // <-- ADDED
 import com.quickbite.dto.OrderDTO;
 import com.quickbite.dto.OrderRequest;
 import com.quickbite.service.OrderService;
@@ -32,7 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf; // <-- ADDED
 
 @WebMvcTest(OrderController.class)
-@Import(SecurityConfig.class) // <-- ADDED
+@Import(TestSecurityConfig.class) // <-- ADDED
 class OrderControllerTest {
 
     @Autowired

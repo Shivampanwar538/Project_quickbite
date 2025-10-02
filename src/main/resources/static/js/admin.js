@@ -54,9 +54,9 @@ document.addEventListener("DOMContentLoaded", () => {
 // ============ DASHBOARD STATISTICS ============
 function loadDashboardStats() {
   Promise.all([
-    fetch('/menu').then(r => r.json()),
-    fetch('/order/all').then(r => r.json()),
-    fetch('/auth').then(r => r.json())
+    fetch('/menu', { credentials: 'include' }).then(r => r.json()),
+    fetch('/order/all', { credentials: 'include' }).then(r => r.json()),
+    fetch('/auth', { credentials: 'include' }).then(r => r.json())
   ])
   .then(([menuItems, orders, users]) => {
     const statsHtml = `
@@ -110,7 +110,7 @@ function loadDashboardStats() {
 // ============ MENU MANAGEMENT ============
 
 function loadMenu() {
-  fetch('/menu')
+  fetch('/menu', { credentials: 'include' })
     .then(res => {
       if (!res.ok) throw new Error('Failed to load menu');
       return res.json();
@@ -185,6 +185,7 @@ document.getElementById("add-item-form").addEventListener("submit", e => {
   fetch('/menu', {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
+    credentials: 'include',
     body: JSON.stringify(newItem)
   })
   .then(res => {
@@ -269,6 +270,7 @@ function saveEdit(id) {
   fetch(`/menu/${id}`, {
     method: 'PUT',
     headers: {'Content-Type': 'application/json'},
+    credentials: 'include',
     body: JSON.stringify({
       name: newName,
       description: newDesc,
@@ -300,7 +302,10 @@ function deleteItem(id) {
     return;
   }
 
-  fetch(`/menu/${id}`, { method: 'DELETE' })
+  fetch(`/menu/${id}`, { 
+    method: 'DELETE',
+    credentials: 'include'
+  })
     .then(res => {
       if (!res.ok) {
         return res.json().then(error => {
@@ -319,7 +324,7 @@ function deleteItem(id) {
 // ============ ORDER MANAGEMENT ============
 
 function loadOrders() {
-  fetch('/order/all')
+  fetch('/order/all', { credentials: 'include' })
     .then(res => {
       if (!res.ok) throw new Error('Failed to load orders');
       return res.json();
@@ -397,7 +402,10 @@ function updateOrderStatus(orderId, status) {
     return;
   }
 
-  fetch(`/order/${orderId}/status?status=${status}`, { method: 'PUT' })
+  fetch(`/order/${orderId}/status?status=${status}`, { 
+    method: 'PUT',
+    credentials: 'include'
+  })
     .then(res => {
       if (!res.ok) {
         return res.json().then(error => {

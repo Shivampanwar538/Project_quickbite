@@ -184,24 +184,39 @@ function register() {
 
 // ===================== LOGOUT =====================
 function logout() {
-  localStorage.removeItem('userId');
-  localStorage.removeItem('username');
-  localStorage.removeItem('role');
+  fetch('/auth/logout', {
+    method: 'POST',
+    credentials: 'include'
+  })
+  .then(() => {
+    localStorage.removeItem('userId');
+    localStorage.removeItem('username');
+    localStorage.removeItem('role');
 
-  // Show success message if on a page with message container
-  const msgElement = document.getElementById('login-msg') || document.getElementById('register-msg');
-  if (msgElement) {
-    showSuccess(msgElement.id, 'Logged out successfully');
-  }
+    // Show success message if on a page with message container
+    const msgElement = document.getElementById('login-msg') || document.getElementById('register-msg');
+    if (msgElement) {
+      showSuccess(msgElement.id, 'Logged out successfully');
+    }
 
-  // Redirect to home page
-  setTimeout(() => {
+    // Redirect to home page
+    setTimeout(() => {
+      window.location.href = 'index.html';
+    }, 500);
+  })
+  .catch(err => {
+    console.error('Logout error:', err);
+    // Still clear local storage and redirect even if server call fails
+    localStorage.removeItem('userId');
+    localStorage.removeItem('username');
+    localStorage.removeItem('role');
     window.location.href = 'index.html';
-  }, 500);
+  });
 }
 
 // ===================== CHECK AUTH STATUS =====================
 function checkAuthStatus() {
+  // For now, use localStorage as fallback, but ideally should check server session
   const userId = localStorage.getItem('userId');
   const username = localStorage.getItem('username');
 
@@ -217,6 +232,44 @@ function checkAuthStatus() {
   return {
     isAuthenticated: false
   };
+}
+
+// ===================== SERVER AUTH CHECK =====================
+function checkServerAuthStatus() {
+  return fetch('/auth/current', {
+    method: 'GET',
+    credentials: 'include'
+  })
+  .then(res => {
+    if (res.ok) {
+      return res.json();
+    } else {
+      throw new Error('Not authenticated');
+    }
+  })
+  .then(user => {
+    // Update localStorage with server data
+    localStorage.setItem('userId', user.id);
+    localStorage.setItem('username', user.username);
+    localStorage.setItem('role', user.role);
+    
+    return {
+      isAuthenticated: true,
+      userId: user.id,
+      username: user.username,
+      role: user.role
+    };
+  })
+  .catch(err => {
+    // Clear localStorage if server says not authenticated
+    localStorage.removeItem('userId');
+    localStorage.removeItem('username');
+    localStorage.removeItem('role');
+    
+    return {
+      isAuthenticated: false
+    };
+  });
 }
 
 // ===================== ENTER KEY SUPPORT =====================
