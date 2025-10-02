@@ -1,14 +1,14 @@
 package com.quickbite.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
 @Data
 @Document(collection = "orders")
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Order {

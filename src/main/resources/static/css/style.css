@@ -4,23 +4,34 @@ body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   color: #333;
   margin: 0;
-  padding-top: 70px; /* space for navbar */
+  padding-top: 70px;
+  min-height: 100vh;
 }
 
 /* Navbar */
 .navbar {
   border-bottom: 2px solid #ffc107;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  backdrop-filter: blur(10px);
 }
+
 .navbar-brand {
   font-size: 1.5rem;
   letter-spacing: 1px;
 }
+
 .navbar-nav .nav-link {
   font-weight: 500;
   transition: color 0.3s ease;
+  padding: 0.5rem 1rem;
 }
+
 .navbar-nav .nav-link:hover {
   color: #ffc107 !important;
+  transform: scale(1.05);
 }
 
 /* Headings */
@@ -33,27 +44,49 @@ h1, h2, h3 {
 .btn {
   font-weight: 500;
   border-radius: 10px;
+  transition: all 0.3s ease;
 }
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
 .btn-success {
   background: #28a745;
   border: none;
 }
+
 .btn-success:hover {
   background: #218838;
 }
+
 .btn-primary {
   background: #007bff;
   border: none;
 }
+
 .btn-primary:hover {
   background: #0056b3;
 }
+
 .btn-warning {
   background: #ffc107;
   border: none;
+  color: #000;
 }
+
 .btn-warning:hover {
   background: #e0a800;
+}
+
+.btn-danger {
+  background: #dc3545;
+  border: none;
+}
+
+.btn-danger:hover {
+  background: #c82333;
 }
 
 /* Cards */
@@ -61,15 +94,19 @@ h1, h2, h3 {
   border: none;
   border-radius: 15px;
   transition: transform 0.2s, box-shadow 0.2s;
+  overflow: hidden;
 }
+
 .card:hover {
   transform: translateY(-5px);
-  box-shadow: 0px 6px 18px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.15);
 }
+
 .card-title {
   font-size: 1.25rem;
   font-weight: bold;
 }
+
 .card-text {
   font-size: 0.95rem;
   color: #555;
@@ -81,23 +118,63 @@ h1, h2, h3 {
   border-radius: 10px;
   overflow: hidden;
 }
+
 .table th {
   background: #343a40;
   color: white;
   text-align: center;
+  font-weight: 600;
+  border: none;
 }
+
 .table td {
   vertical-align: middle;
   text-align: center;
+  border-bottom: 1px solid #dee2e6;
 }
 
-/* Login/Register Form */
-.container input {
-  border-radius: 8px;
-  border: 1px solid #ccc;
+.table tbody tr:hover {
+  background-color: #f8f9fa;
 }
-.container h2, .container h4 {
-  text-align: center;
+
+/* Forms */
+.form-control {
+  border-radius: 8px;
+  border: 1px solid #ced4da;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-control:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.form-label {
+  font-weight: 600;
+  color: #495057;
+}
+
+/* Alerts */
+.alert {
+  border-radius: 10px;
+  border: none;
+  display: none;
+}
+
+.alert.show {
+  display: block;
+  animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 /* Badges */
@@ -105,4 +182,181 @@ h1, h2, h3 {
   font-size: 0.85rem;
   padding: 0.5em 0.7em;
   border-radius: 8px;
+  font-weight: 600;
+}
+
+/* Loading Spinner */
+.spinner-border {
+  width: 3rem;
+  height: 3rem;
+}
+
+/* Menu Item Cards */
+.menu-item-card {
+  border: 2px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.menu-item-card:hover {
+  border-color: #ffc107;
+  transform: translateY(-8px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+}
+
+/* Quantity Controls */
+.input-group .btn {
+  border-radius: 0;
+}
+
+.input-group .btn:first-child {
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+}
+
+.input-group .btn:last-child {
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+.input-group .form-control {
+  border-left: none;
+  border-right: none;
+}
+
+/* Toast Container */
+.toast-container {
+  z-index: 9999;
+}
+
+.toast {
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Modal Enhancements */
+.modal-content {
+  border-radius: 15px;
+  border: none;
+}
+
+.modal-header {
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+}
+
+/* Status Badges */
+.badge.bg-warning {
+  color: #000;
+}
+
+/* Footer Styling */
+footer {
+  margin-top: auto;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  body {
+    padding-top: 60px;
+  }
+
+  .navbar-brand {
+    font-size: 1.2rem;
+  }
+
+  .card {
+    margin-bottom: 1rem;
+  }
+
+  .table {
+    font-size: 0.875rem;
+  }
+
+  .btn-group .btn {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+  }
+}
+
+/* Utility Classes */
+.text-warning {
+  color: #ffc107 !important;
+}
+
+.bg-primary {
+  background-color: #007bff !important;
+}
+
+.bg-success {
+  background-color: #28a745 !important;
+}
+
+.bg-warning {
+  background-color: #ffc107 !important;
+}
+
+.bg-danger {
+  background-color: #dc3545 !important;
+}
+
+.bg-info {
+  background-color: #17a2b8 !important;
+}
+
+/* Shadow Utilities */
+.shadow-sm {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+}
+
+.shadow {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15) !important;
+}
+
+.shadow-lg {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Animation for page load */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.container {
+  animation: fadeIn 0.5s ease;
+}
+
+/* Login/Register Page Enhancements */
+.card.shadow-lg {
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* Error and Success Messages */
+#login-msg,
+#register-msg {
+  animation: slideIn 0.3s ease;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }

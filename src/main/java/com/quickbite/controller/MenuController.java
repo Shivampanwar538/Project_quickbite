@@ -1,45 +1,46 @@
 package com.quickbite.controller;
 
-import org.springframework.web.bind.annotation.*;
-import com.quickbite.repository.MenuRepository;
-import com.quickbite.model.MenuItem;
-import java.util.List;
 import com.quickbite.dto.MenuItemDTO;
+import com.quickbite.model.MenuItem;
+import com.quickbite.service.MenuService;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/menu")
 @CrossOrigin(origins = "*")
+@RequiredArgsConstructor
 public class MenuController {
-    private final MenuRepository menuRepo;
 
-    public MenuController(MenuRepository menuRepo) {
-        this.menuRepo = menuRepo;
-    }
+    private final MenuService menuService;
 
     @GetMapping
-    public List<MenuItemDTO> getMenu() {
-        return menuRepo.findAll().stream()
-                .map(item -> new MenuItemDTO(item.getId(), item.getName(),
-                        item.getDescription(), item.getPrice()))
-                .toList();
+    public ResponseEntity<List<MenuItemDTO>> getMenu() {
+        List<MenuItemDTO> menuItems = menuService.getAllMenuItems();
+        return ResponseEntity.ok(menuItems);
     }
 
     @PostMapping
-    public MenuItemDTO addItem(@RequestBody MenuItem item) {
-        return new MenuItemDTO(menuRepo.save(item));
+    public ResponseEntity<MenuItemDTO> addItem(@Valid @RequestBody MenuItem item) {
+        MenuItemDTO addedItem = menuService.addMenuItem(item);
+        return ResponseEntity.status(HttpStatus.CREATED).body(addedItem);
     }
 
     @PutMapping("/{id}")
-    public MenuItemDTO updateItem(@PathVariable String id, @RequestBody MenuItem newItem) {
-        MenuItem existing = menuRepo.findById(id).orElseThrow();
-        existing.setName(newItem.getName());
-        existing.setDescription(newItem.getDescription());
-        existing.setPrice(newItem.getPrice());
-        return new MenuItemDTO(menuRepo.save(existing));
+    public ResponseEntity<MenuItemDTO> updateItem(@PathVariable String id,
+                                                  @Valid @RequestBody MenuItem newItem) {
+        MenuItemDTO updatedItem = menuService.updateMenuItem(id, newItem);
+        return ResponseEntity.ok(updatedItem);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteItem(@PathVariable String id) {
-        menuRepo.deleteById(id);
+    public ResponseEntity<Void> deleteItem(@PathVariable String id) {
+        menuService.deleteMenuItem(id);
+        return ResponseEntity.noContent().build();
     }
 }

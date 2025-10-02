@@ -6,23 +6,21 @@ import com.quickbite.model.User;
 import com.quickbite.repository.MenuRepository;
 import com.quickbite.repository.OrderRepository;
 import com.quickbite.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
+@Slf4j
 public class DataInitializer implements CommandLineRunner {
 
     private final UserRepository userRepository;
     private final MenuRepository menuRepository;
     private final OrderRepository orderRepository;
-
-    public DataInitializer(UserRepository userRepository,
-                           MenuRepository menuRepository,
-                           OrderRepository orderRepository) {
-        this.userRepository = userRepository;
-        this.menuRepository = menuRepository;
-        this.orderRepository = orderRepository;
-    }
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public void run(String... args) throws Exception {
@@ -41,22 +39,26 @@ public class DataInitializer implements CommandLineRunner {
     }
 
     private void initializeUsers() {
+        log.info("Initializing users...");
+
         User student = new User();
         student.setUsername("user1");
-        student.setPassword("user123");
+        student.setPassword(passwordEncoder.encode("user@123"));
         student.setRole("STUDENT");
         userRepository.save(student);
 
         User admin = new User();
         admin.setUsername("admin");
-        admin.setPassword("admin123");
+        admin.setPassword(passwordEncoder.encode("admin@123"));
         admin.setRole("ADMIN");
         userRepository.save(admin);
 
-        System.out.println("✅ Users initialized in MongoDB");
+        log.info("✅ Users initialized in MongoDB with encrypted passwords");
     }
 
     private void initializeMenuItems() {
+        log.info("Initializing menu items...");
+
         MenuItem pizza = new MenuItem();
         pizza.setName("Margherita Pizza");
         pizza.setDescription("Classic cheese & tomato");
@@ -81,10 +83,12 @@ public class DataInitializer implements CommandLineRunner {
         fries.setPrice(89.0);
         menuRepository.save(fries);
 
-        System.out.println("✅ Menu items initialized in MongoDB");
+        log.info("✅ Menu items initialized in MongoDB");
     }
 
     private void initializeOrders() {
+        log.info("Initializing sample orders...");
+
         // Get users and menu items for creating sample orders
         User user1 = userRepository.findByUsername("user1");
         MenuItem pizza = menuRepository.findAll().stream()
@@ -127,6 +131,6 @@ public class DataInitializer implements CommandLineRunner {
             orderRepository.save(order3);
         }
 
-        System.out.println("✅ Sample orders initialized in MongoDB");
+        log.info("✅ Sample orders initialized in MongoDB");
     }
 }

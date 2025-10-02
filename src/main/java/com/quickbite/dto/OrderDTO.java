@@ -6,18 +6,20 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class OrderDTO {
+public class
+OrderDTO {
     private String id;  // Changed from Long to String
     private String itemName;
     private String status;
     private String username;
     private int quantity;
 
-    public OrderDTO(String id, String itemName, String status, String username) {
+    public OrderDTO(String id, String itemName, String status, String username, int quantity) {
         this.id = id;
         this.itemName = itemName;
         this.status = status;
         this.username = username;
+        this.quantity = quantity;
     }
 
     public OrderDTO(Order order) {
